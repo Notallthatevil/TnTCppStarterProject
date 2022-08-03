@@ -1,0 +1,132 @@
+{
+   "version": 3,
+   "configurePresets": [
+      {
+         "name": "base",
+         "description": "Base configuration",
+         "hidden": true,
+         "binaryDir": "${sourceDir}/out/build/${presetName}",
+         "installDir": "${sourceDir}/out/install/${presetName}",
+         "cacheVariables": {
+            "ENABLE_TESTING": true,
+            "ENABLE_FUZZING": true
+         }
+      },
+      {
+         "name": "windows-base",
+         "description": "Base Windows configuration",
+         "hidden": true,
+         "inherits": "base",
+         "architecture": {
+            "value": "x64",
+            "strategy": "external"
+         },
+         "condition": {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+         }
+      },
+      {
+         "name": "windows-debug",
+         "displayName": "Windows Debug",
+         "description": "Sets debug build type",
+         "inherits": "windows-base",
+         "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Debug"
+         }
+      },
+      {
+         "name": "windows-release",
+         "displayName": "Windows Release",
+         "description": "Sets release build type",
+         "inherits": "windows-base",
+         "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Release"
+         }
+      },
+      {
+         "name": "linux-base",
+         "description": "Base Windows configuration",
+         "hidden": true,
+         "inherits": "base",
+         "condition": {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+         },
+         "cacheVariables": {
+            "CMAKE_C_FLAGS": "-fPIC -fvisibility=hidden",
+            "CMAKE_CXX_FLAGS": "-fPIC -fvisibility=hidden"
+         }
+      },
+      {
+         "name": "linux-debug",
+         "displayName": "Linux Debug",
+         "description": "Sets debug build type",
+         "inherits": "linux-base",
+         "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Debug"
+         }
+      },
+      {
+         "name": "linux-release",
+         "displayName": "Linux Release",
+         "description": "Sets release build type",
+         "inherits": "linux-base",
+         "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Release"
+         }
+      }
+   ],
+   "buildPresets": [
+      {
+         "name": "build-base",
+         "hidden": true,
+         "jobs": 4,
+         "description": "Vanilla build"
+      },
+      {
+         "name": "debug-build-windows",
+         "displayName": "Default",
+         "inherits": "build-base",
+         "configurePreset": "windows-debug",
+      },
+      {
+         "name": "release-build-windows",
+         "displayName": "Default",
+         "inherits": "build-base",
+         "configurePreset": "windows-release",
+      },
+      {
+         "name": "debug-build-linux",
+         "displayName": "Default",
+         "inherits": "build-base",
+         "configurePreset": "linux-debug",
+      },
+      {
+         "name": "release-build-linux",
+         "displayName": "Default",
+         "inherits": "build-base",
+         "configurePreset": "linux-release",
+      }
+   ],
+   "testPresets": [
+      {
+         "name": "test-windows",
+         "configurePreset": "windows-debug",
+         "output": {
+            "outputOnFailure": true,
+            "shortProgress": true
+         }
+      },
+      {
+         "name": "test-linux",
+         "configurePreset": "linux-debug",
+         "output": {
+            "outputOnFailure": true,
+            "shortProgress": true
+         }
+      }
+   ]
+}
