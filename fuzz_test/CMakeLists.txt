@@ -11,7 +11,9 @@ target_link_libraries(
 )
 
 
-if(NOT MSVC)
+if(MSVC)
+   target_compile_options(fuzz_tester PRIVATE /fsanitize=address /fsanitize=fuzzer)
+else()
    target_compile_options(fuzz_tester PRIVATE -fsanitize=fuzzer,undefined,address)
 endif()
 
