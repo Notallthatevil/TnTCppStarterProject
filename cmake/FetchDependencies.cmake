@@ -1,5 +1,7 @@
 include_guard()
 
+set(FETCHCONTENT_BASE_DIR "${CMAKE_SOURCE_DIR}/.deps")
+
 function(fetch_googletest target_project)
    if(NOT googletest_POPULATED)
       message(STATUS "Pulling Google Test into ${target_project}...")
